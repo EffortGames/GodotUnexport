@@ -171,8 +171,7 @@ func _is_property_hidden(script: Script, property_name: String) -> bool:
 
 
 ## Expects group name in the form of "Category>Group" (no quotes even if spaces)
-func _is_group_hidden(script: Script, group_name: String) -> bool:	
-	print("Checking ", group_name)
+func _is_group_hidden(script: Script, group_name: String) -> bool:
 	if _is_category_temporarily_visible(script, group_name.split(">")[0]): return false
 	var hidden_properties := hidden_properties_cache.get(script)
 	if !hidden_properties: return false
