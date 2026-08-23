@@ -41,6 +41,6 @@ This project is licensed under GPLv3. This does NOT mean that your project must 
 
 If you would like to contribute to this library, please open an issue or a pull request. I am happy to accept bug fixes and documentation improvements, however new features will only be considered if they do not substantially increase the maintenance complexity. Please make sure to follow the code style and conventions used in the library when contributing.
 
-
+&nbsp;
 
 **Copyright [Auri Collings](https://github.com/Aurailus) 2026. Made with ❤️.**
