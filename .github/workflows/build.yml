@@ -1,4 +1,4 @@
-name: Build GodotUnexport
+name: Build
 
 on:
   push:
