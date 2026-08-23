@@ -37,4 +37,10 @@ If a script inherits from another script, the parent script will also be scanned
 
 This project is licensed under GPLv3. This does NOT mean that your project must be licensed under GPLv3, since the plugin does not write any code into your project that would be exported, nor does your project become a derivative work. You can use any license for your project that you like, no credit necessary. But if you find **Unexport my Props!** valuable, including a credit to **Auri Collings** would be much appreciated!
 
+## Contributing
 
+If you would like to contribute to this library, please open an issue or a pull request. I am happy to accept bug fixes and documentation improvements, however new features will only be considered if they do not substantially increase the maintenance complexity. Please make sure to follow the code style and conventions used in the library when contributing.
+
+
+
+**Copyright [Auri Collings](https://github.com/Aurailus) 2026. Made with ❤️.**
