@@ -1,6 +1,6 @@
 # Unexport my Props!
 
-**Unexport my Props!** lets scenes selectively hide exported properties from inherited classes from the Godot Inspector. Properties can be hidden individually, or by group or category. This is useful when an exported property from a base class breaks a child class if set. For example, if you add your own `Label` node to a custom `Button` scene, you're likely not expecting a user to use the base `Button`'s `text` property to be set, and that might end up breaking your class in unexpected and confusing ways!
+**Unexport my Props!** lets scripts selectively hide exported properties from inherited scripts from the Godot Inspector. Properties can be hidden individually, or by group or category. This is useful when an exported property from a base script breaks a child script if set. For example, if you add your own `Label` node to a custom `Button` scene, you're likely not expecting a user to use the base `Button`'s `text` property to be set, and that might end up breaking your scene in unexpected and confusing ways!
 
 ## How to Use
 
@@ -32,7 +32,7 @@ If a script inherits from another script, the parent script will also be scanned
 
 - Only the first 30 lines of a given file are scanned for `#@unexport` declarations to save on processing time.
 - Because of the way Godot InspectorPlugins work, groups and categories themselves can't be hidden. If you unexport all properties from a group or category, the label will remain, but it will have no members. This isn't possible to circumvent currently.
-- If you have multiple categories with the same name (e.g. using `@export_category` on multiple classes), all of them will be hidden or unhidden at once. It is not possible currently hide a category only a specific class.
+- If you have multiple categories with the same name (e.g. using `@export_category` on multiple classes), all of them will be hidden or unhidden at once. It is not possible currently hide a category only on a specific class.
 - `#@unexport` is a comment, not an annotation, as it is not currently possible to create custom annotations.
 
 This project is licensed under GPLv3. This does NOT mean that your project must be licensed under GPLv3, since the plugin does not write any code into your project that would be exported, nor does your project become a derivative work. You can use any license for your project that you like, no credit necessary. But if you find **Unexport my Props!** valuable, including a credit to **Auri Collings** would be much appreciated!
