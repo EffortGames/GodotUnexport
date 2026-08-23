@@ -1,0 +1,27 @@
+name: Build GodotUnexport
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Copy Documentation Files
+        run: |
+          cp README.md addons/unexport/README.md
+          cp LICENSE.md addons/unexport/LICENSE.md
+
+      - name: Create ZIP
+        run: |
+          zip -r GodotUnexport.zip addons
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: GodotUnexport.zip
+          path: GodotUnexport.zip
