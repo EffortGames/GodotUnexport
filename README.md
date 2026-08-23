@@ -35,7 +35,9 @@ If a script inherits from another script, the parent script will also be scanned
 - If you have multiple categories with the same name (e.g. using `@export_category` on multiple classes), all of them will be hidden or unhidden at once. It is not possible currently hide a category only on a specific class.
 - `#@unexport` is a comment, not an annotation, as it is not currently possible to create custom annotations.
 
-This project is licensed under GPLv3. This does NOT mean that your project must be licensed under GPLv3, since the plugin does not write any code into your project that would be exported, nor does your project become a derivative work. You can use any license for your project that you like, no credit necessary. But if you find **Unexport my Props!** valuable, including a credit to **Auri Collings** would be much appreciated!
+## License
+
+This project is licensed under GPLv3, see the license file for details. This does NOT mean that your project must be licensed under GPLv3, since the plugin does not write any code into your project that would be exported, nor does your project become a derivative work. You can use any license for your project that you like, no credit necessary. But if you find **Unexport my Props!** valuable, including a credit to **Auri Collings** would be much appreciated!
 
 ## Contributing
 
