@@ -1,5 +1,6 @@
 extends EditorInspectorPlugin
-class_name AuriHiderInspectorPlugin
+
+signal _on_cleanup()
 
 ## Look up the script to find its list of hidden properties and groups.
 ## type HiddenProperty<Category, Property>: `Category:Property`
@@ -27,7 +28,8 @@ var label_properties_visible := "[i]Ignoring [b]@unexport[/b], all properties vi
 var temporarily_visible_categories: Dictionary[Script, PackedStringArray] = {}
 
 
-func _init() -> void:
+func _init() -> void:	
+	# Setup Litte UI Component thingy
 	var container := Button.new()
 	container.icon_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	var stylebox := StyleBoxFlat.new()
@@ -64,6 +66,14 @@ func _init() -> void:
 	hidden_properties_label = container
 
 
+func _on_file_changed(path: String):
+	var object := EditorInterface.get_inspector().get_edited_object()
+	if !object: return
+	var script := object.get_script()
+	if !script: return
+	if script.resource_path == path: _reload_editor()
+
+
 func _append_unless_exists(array: PackedStringArray, token: String):
 	if array.has(token): return
 	array.append(token)
@@ -81,7 +91,7 @@ func _cache_script_hidden_properties(script: Script) -> void:
 		categories_with_hidden = PackedStringArray()
 	}
 	
-	for line in source.split("\n").slice(0, 30):
+	for line in source.split("\n").slice(0, UnexportPlugin.MAX_LINES_SEARCHED):
 		if !("@unexport" in line): continue
 		var matched = hide_properties_regex.search(line)
 		if !matched: continue
@@ -133,9 +143,7 @@ func _get_hidden_control(script: Script, category_name: String) -> Control:
 		else:
 			if !temporarily_visible_categories.has(script): temporarily_visible_categories.set(script, PackedStringArray())
 			temporarily_visible_categories.get(script).append(category_name)
-		var object := EditorInterface.get_inspector().get_edited_object()
-		EditorInterface.inspect_object.call_deferred(null)
-		EditorInterface.inspect_object.call_deferred(object)
+		_reload_editor()
 	)
 	return new_control
 
@@ -234,3 +242,31 @@ func _parse_property(
 ) -> bool:
 	if is_current_category_hidden or is_current_group_hidden: return true
 	else: return _is_property_hidden(object.get_script(), "%s:%s" % [ current_category, property_name ])
+
+
+func _parse_end(_object: Object) -> void:
+	var inspector := EditorInterface.get_inspector()
+	for child in inspector.get_children(): _hide_empty_inspector_groups(child)
+
+
+func _get_group_num_children(node: Node, group_name: String) -> int:
+	if node.get_class().begins_with("EditorProperty"): return 1
+	else:
+		var children: int = 0
+		for child in node.get_children(): children += _get_group_num_children(child, group_name)
+		return children
+
+
+func _hide_empty_inspector_groups(node: Node) -> void:
+	for child in node.get_children(): _hide_empty_inspector_groups(child)
+	if node.get_class() == "EditorInspectorSection":
+		var num_children := _get_group_num_children(node, node.tooltip_text)
+		node.visible = num_children > 0
+	# Matches category headers, but we don't want to mess with that since those are where the ignoring labels go.
+	# elif node.get_class() == "EditorInspectorCategory":
+
+
+func _reload_editor() -> void:
+	var object := EditorInterface.get_inspector().get_edited_object()
+	EditorInterface.inspect_object.call_deferred(null)
+	EditorInterface.inspect_object.call_deferred(object)

@@ -1,5 +1,3 @@
-class_name AuriHiderHighlighter
-
 signal _on_cleanup
 
 var _plugin_node: Node
@@ -53,7 +51,7 @@ func _on_text_changed() -> void:
 
 func _highlight_code_edit() -> void:
 	if !_current_code_edit: return
-	for i in _current_code_edit.get_line_count():
+	for i in min(_current_code_edit.get_line_count(), UnexportPlugin.MAX_LINES_SEARCHED):
 		var line := _current_code_edit.get_line(i)
 		if !line.begins_with("# @unexport ") and !line.begins_with("#@unexport "): continue
 		_current_code_edit.set_line_background_color(i, Color(0.846, 0.458, 0.0, 0.115))

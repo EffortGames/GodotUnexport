@@ -5,9 +5,8 @@
 ## How to Use
 
 1) Install and enable the plugin by downloading this repo, or via the Godot Asset Store.
-2) In your scene's Script file, include a comment of this format: `#@unexport BaseClass:property`
-3) Swap the inspector to a different node and back again to update it.
-4) `BaseClass:property` should now be hidden from the inspector!
+2) In your scene's script, write a comment of this format: `#@unexport BaseClass:property` and save the file!
+3) `BaseClass:property` should now be hidden from the inspector!
 
 ## Advanced Usage
 
@@ -20,7 +19,8 @@
 Subgroups can be specified by using a `/` character. For example, if you have the category "Category", a group within called "Group", and a subgroup called "Sub Group", you can hide the contents of "Sub Group" with `#@unexport Category>"Group/Sub Group"` (note the quotes surrounding the **entire** group expression).
 
 Example using all three forms:
-```
+
+```gdscript
 #@unexport Button:text Button>"Text Behavior" BaseButton:*
 ```
 
@@ -30,14 +30,25 @@ If a script inherits from another script, the parent script will also be scanned
 
 ## Limitations
 
-- Only the first 30 lines of a given file are scanned for `#@unexport` declarations to save on processing time.
-- Because of the way Godot InspectorPlugins work, groups and categories themselves can't be hidden. If you unexport all properties from a group or category, the label will remain, but it will have no members. This isn't possible to circumvent currently.
-- If you have multiple categories with the same name (e.g. using `@export_category` on multiple classes), all of them will be hidden or unhidden at once. It is not possible currently hide a category only on a specific class.
+- Only the first 100 lines of a given file are scanned for `#@unexport` declarations for efficiency.
+- If you have multiple categories with the same name (e.g. using `@export_category` on multiple classes), all of them will be hidden or unhidden at once. It is not possible to hide a category only for a specific class.
 - `#@unexport` is a comment, not an annotation, as it is not currently possible to create custom annotations.
 
 ## License
 
 This project is licensed under GPLv3, see the license file for details. This does NOT mean that your project must be licensed under GPLv3, since the plugin does not write any code into your project that would be exported, nor does your project become a derivative work. You can use any license for your project that you like, no credit necessary. But if you find **Unexport my Props!** valuable, including a credit to **Auri Collings** would be much appreciated!
+
+## Update History
+
+### 1.0.1
+
+- Increased the number of lines scanned for #@unexport declarations to 100.
+- Made the inspector reload automatically if the script that's being edited is attached to the inspected node. (Fixes needing to swap to a different node and then back to update hidden items.)
+- Made empty groups not render in the inspector. (Fixes empty groups remaining visible when all items are hidden.)
+
+### 1.0.0
+
+- Initial Release
 
 ## Contributing
 
