@@ -4,6 +4,9 @@ var _plugin_node: Node
 var _current_code_edit: CodeEdit = null
 var _rehighlight_timer := Timer.new()
 
+var enabled := true
+var scanned_lines := 100
+
 func setup(plugin_node: Node) -> void:
 	_plugin_node = plugin_node
 	_plugin_node.add_child(_rehighlight_timer, false, Node.INTERNAL_MODE_FRONT)
@@ -20,6 +23,17 @@ func setup(plugin_node: Node) -> void:
 		EditorInterface.get_script_editor().editor_script_changed.disconnect(_handle_script_changed)
 		_disconnect_current_code_edit()
 	)
+
+
+func set_enabled(enabled: bool) -> void:
+	if self.enabled == enabled: return
+	self.enabled = enabled
+	_highlight_code_edit()
+
+
+func set_scanned_lines(lines: int) -> void:
+	scanned_lines = lines
+	_highlight_code_edit()
 
 
 func _on_script_changed() -> void:
@@ -50,8 +64,8 @@ func _on_text_changed() -> void:
 
 
 func _highlight_code_edit() -> void:
-	if !_current_code_edit: return
-	for i in min(_current_code_edit.get_line_count(), UnexportPlugin.MAX_LINES_SEARCHED):
+	if !_current_code_edit or !enabled: return
+	for i in min(_current_code_edit.get_line_count(), scanned_lines):
 		var line := _current_code_edit.get_line(i)
 		if !line.begins_with("# @unexport ") and !line.begins_with("#@unexport "): continue
 		_current_code_edit.set_line_background_color(i, Color(0.846, 0.458, 0.0, 0.115))

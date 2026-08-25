@@ -27,6 +27,9 @@ var label_properties_hidden := "[i]Some properties hidden by [b]@unexport[/b][/i
 var label_properties_visible := "[i]Ignoring [b]@unexport[/b], all properties visible[/i]"
 var temporarily_visible_categories: Dictionary[Script, PackedStringArray] = {}
 
+var show_hint_button := true
+var scanned_lines := 100
+
 
 func _init() -> void:	
 	# Setup Litte UI Component thingy
@@ -58,12 +61,23 @@ func _init() -> void:
 	stylebox = StyleBoxFlat.new()
 	stylebox.bg_color = Color.TRANSPARENT
 	stylebox.content_margin_left = 7
+	var scale := EditorInterface.get_editor_scale()
 	label.add_theme_stylebox_override("normal", stylebox)
-	label.add_theme_font_size_override("italics_font_size", 11)
-	label.add_theme_font_size_override("bold_italics_font_size", 11)
+	label.add_theme_font_size_override("italics_font_size", roundi(11 * scale))
+	label.add_theme_font_size_override("bold_italics_font_size", roundi(11 * scale))
 	hbox.add_child(label)
 	
 	hidden_properties_label = container
+
+
+func set_show_hint_button(show: bool) -> void:
+	if show_hint_button == show: return
+	show_hint_button = show
+	_reload_editor()
+
+
+func set_scanned_lines(lines: int) -> void:
+	scanned_lines = lines
 
 
 func _on_file_changed(path: String):
@@ -91,7 +105,7 @@ func _cache_script_hidden_properties(script: Script) -> void:
 		categories_with_hidden = PackedStringArray()
 	}
 	
-	for line in source.split("\n").slice(0, UnexportPlugin.MAX_LINES_SEARCHED):
+	for line in source.split("\n").slice(0, scanned_lines):
 		if !("@unexport" in line): continue
 		var matched = hide_properties_regex.search(line)
 		if !matched: continue
@@ -221,7 +235,8 @@ func _parse_category(object: Object, category: String) -> void:
 	var script := object.get_script()
 	is_current_group_hidden = false
 	is_current_category_hidden = _is_category_hidden(script, category)
-	if _category_has_hidden(script, category): add_custom_control(_get_hidden_control(script, category))
+	if _category_has_hidden(script, category) and show_hint_button:
+		add_custom_control(_get_hidden_control(script, category))
 	#print("PARSING CATEGORY ", category, " FOR OBJECT ", object)
 
 

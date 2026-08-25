@@ -1,11 +1,9 @@
 @tool
 extends EditorPlugin
-class_name UnexportPlugin
-
-const MAX_LINES_SEARCHED := 100
 
 signal _on_cleanup()
 
+var SETTINGS := preload("./settings.gd").new()
 var inspector := preload("./inspector.gd").new()
 var highlighter := preload("./highlighter.gd").new()
 
@@ -13,10 +11,22 @@ func _enter_tree() -> void:
 	_setup_inspector() 
 	_setup_highlighter()
 
+	SETTINGS.setup()
+	ProjectSettings.settings_changed.connect(_reload_settings)
+	_reload_settings()
 
 func _exit_tree() -> void: 
 	_on_cleanup.emit()
 	for connection in _on_cleanup.get_connections(): _on_cleanup.disconnect(connection.callable)
+	ProjectSettings.settings_changed.disconnect(_reload_settings)
+
+
+func _reload_settings() -> void:
+	inspector.set_show_hint_button(SETTINGS.get_setting(SETTINGS.SETTING_SHOW_HINT_BUTTON))
+	highlighter.set_enabled(SETTINGS.get_setting(SETTINGS.SETTING_HIGHLIGHT_LINES))
+	var scanned_lines := SETTINGS.get_setting(SETTINGS.SETTING_NUM_LINES)
+	highlighter.set_scanned_lines(scanned_lines)
+	inspector.set_scanned_lines(scanned_lines)
 
 
 func _setup_inspector() -> void:
