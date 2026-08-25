@@ -78,3 +78,5 @@ If you would like to contribute to this plugin, please open an issue or a pull r
 &nbsp;
 
 **Copyright [Auri Collings](https://github.com/Aurailus) 2026. Made with ❤️.**
+
+[Thumbnail Background Pattern by Hero Patterns](https://heropatterns.com/), licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
