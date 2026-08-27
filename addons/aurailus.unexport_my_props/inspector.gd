@@ -138,10 +138,10 @@ func _cache_script_hidden_properties(script: Script) -> void:
 				_append_unless_exists(hidden_properties.hidden_properties, token)
 				_append_unless_exists(hidden_properties.categories_with_hidden, category)
 		
-		var base := script.get_base_script()
-		if base:
-			hidden_properties.inherits = base
-			_cache_script_hidden_properties(base)
+	var base := script.get_base_script()
+	if base:
+		hidden_properties.inherits = base
+		_cache_script_hidden_properties(base)
 
 	hidden_properties_cache.set(script, hidden_properties)
 
