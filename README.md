@@ -52,6 +52,10 @@ This project is licensed under GPLv3, see the license file for details. This doe
 
 ## Update History
 
+### 1.0.3
+
+- Fixed a bug where unexports in inherited scripts wouldn't be read if the descendant had no unexport lines.
+
 ### 1.0.2
 
 - Added an option to hide the hidden properties banner.
