@@ -18,3 +18,4 @@ func _add_setting(path: String, type: Variant.Type, default: Variant, descriptio
 	if !ProjectSettings.has_setting(path): ProjectSettings.set_setting(path, default)
 	ProjectSettings.set_initial_value(path, default)
 	ProjectSettings.add_property_info({ name = path, type = type, hint_string = description })
+	ProjectSettings.set_as_basic(path, true)
